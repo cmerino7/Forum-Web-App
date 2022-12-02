@@ -6,15 +6,11 @@ from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
 from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 
 import os
 
 app = Flask(__name__)
 CORS(app)
-
-admin = Admin(app)
 
 courses = os.path.abspath(os.path.dirname(__file__)) 
 
@@ -111,9 +107,8 @@ class Admins(db.Model, UserMixin):
     password = db.Column(db.String, nullable = False)
     
 class RegisterForm(FlaskForm):
-    authChoice = ["Student", "Teacher", "Admin(don't abuse thx)"]
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
-    authentication = SelectField('Role', choices=authChoice, validators=[InputRequired()], render_kw={"placeholder" : "authentication"})
+    authentication = SelectField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "authentication"})
     username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Register")
@@ -127,13 +122,6 @@ class LoginForm(FlaskForm):
     username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Login")
-
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Teacher, db.session))
-admin.add_view(ModelView(Admins, db.session))
-admin.add_view(ModelView(Course, db.session))
-admin.add_view(ModelView(Attendance, db.session))
-admin.add_view(ModelView(Roster, db.session))
 
 @app.route('/student', methods = ['GET'])
 @login_required
@@ -172,10 +160,6 @@ def login():
                 login_user(user)
                 if user.authentication == 'Student':
                     return redirect(url_for('student', name=user.name, ID=user.id))
-                elif user.authentication == 'Teacher':
-                    return redirect(url_for('instructor', name=user.name, ID=user.id))
-                elif user.authentication == 'Admin':
-                    return redirect(url_for('admin.index'))
     return render_template('login.html', form = form)
 
 @app.route('/instructor', methods = ['GET'])
