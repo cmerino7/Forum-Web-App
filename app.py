@@ -29,6 +29,19 @@ def load_user(user_id):
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app) 
 
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String, unique = True, nullable = False)
+    username = db.Column(db.String, unique = True, nullable = False)
+    password = db.Column(db.String, nullable = False)
+    #scheduele = db.relationship('Roster', back_populates ='user')
+    #instructor = db.relationship('Attendance', back_populates ='user')
+    #lazy1 = db.relationship('Icarus', back_populates = 'user')
+    def __repr__(self):
+        return f'Student: {self.name}'   
+
+
+'''
 class Icarus(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
@@ -105,10 +118,10 @@ class Admins(db.Model, UserMixin):
     authentication = db.Column(db.String, nullable = False)
     username = db.Column(db.String, unique = True, nullable = False)
     password = db.Column(db.String, nullable = False)
+'''
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
-    authentication = SelectField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "authentication"})
     username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Register")
@@ -123,6 +136,31 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Login")
 
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        new_user = User(name = form.name.data, username = form.username.data, password = hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('Register.html', form = form)
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(username = form.username.data).first():
+            user = User.query.filter_by(username = form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('student', name=user.name, ID=user.id))
+    return render_template('login.html', form = form)
+
+
+'''
 @app.route('/student', methods = ['GET'])
 @login_required
 def student():
@@ -227,6 +265,7 @@ def add():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+'''
 
 @app.route("/")
 def home():
