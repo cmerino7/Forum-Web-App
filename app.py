@@ -57,11 +57,6 @@ class RegisterForm(FlaskForm):
         if existing_user_username:
             raise ValidationError("That username already exists. Please choose a different one.") 
 
-class LoginForm(FlaskForm):
-    username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
-    password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
-    submit = SubmitField("Login")
-
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -85,16 +80,37 @@ def login():
                 return redirect(url_for('dashboard', name=user.name, ID=user.id))
     return render_template('login.html', form = form)
 
-@app.route('/dashboard', methods = ['GET'])
-@login_required
-def dashboard():
-    return render_template('dashboard.html')
-
 @app.route('/logout', methods = ['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+class LoginForm(FlaskForm):
+    username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
+    password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
+    submit = SubmitField("Login")
+
+@app.route('/dashboard', methods = ['GET'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/question', methods = ['GET', 'POST'])
+@login_required
+def question():
+    return render_template('question.html')
+
+@app.route("/")
+def home():
+    return "Hello, Flask!"
+
+if __name__ == '__main__':
+    app.run()
+
+with app.app_context():
+    db.create_all()
+
 '''
 @app.route('/student', methods = ['GET'])
 @login_required
@@ -162,13 +178,3 @@ def add():
         flash("Class added!", "info")
         return redirect(url_for('add'))
 '''
-
-@app.route("/")
-def home():
-    return "Hello, Flask!"
-
-if __name__ == '__main__':
-    app.run()
-
-with app.app_context():
-    db.create_all()
