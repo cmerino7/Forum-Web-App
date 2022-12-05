@@ -34,91 +34,17 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String, unique = True, nullable = False)
     username = db.Column(db.String, unique = True, nullable = False)
     password = db.Column(db.String, nullable = False)
-    #scheduele = db.relationship('Roster', back_populates ='user')
-    #instructor = db.relationship('Attendance', back_populates ='user')
-    #lazy1 = db.relationship('Icarus', back_populates = 'user')
+    inquiry = db.relationship('Question', foreign_keys = 'Post.asker', backref = 'ask', lazy = True)
+    Reply = db.relationship('Question', foreign_keys ='Post.responser', backref = 'response', lazy = True)
     def __repr__(self):
         return f'Student: {self.name}'   
 
-
-'''
-class Icarus(db.Model):
+class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-    course_id = db.Column('course_id', db.Integer, db.ForeignKey('course.id'))
-    class_name = db.Column('class_name', db.String)
-    teacher = db.Column('teacher', db.String)
-    time = db.Column('time', db.String)
-    enrollment = db.Column('enrollment', db.Integer)
-    capacity = db.Column('capacity', db.Integer)
-    user = db.relationship('User', back_populates = 'lazy1')
-    course = db.relationship('Course', back_populates = 'lazy2')
-
-Teaches = db.Table('Teaches', 
-    db.Column('Teacher_id', db.Integer, db.ForeignKey('teacher.id')),
-    db.Column('Class_id', db.Integer, db.ForeignKey('course.id'))
-)
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    course_id = db.Column(db.String, unique = True)
-    teacher = db.Column(db.String, unique = False) 
-    time = db.Column(db.String, unique = False)
-    enrollment = db.Column(db.Integer, unique = False)
-    capacity = db.Column(db.Integer, unique = False)
-    learners = db.relationship('Roster', back_populates = 'course')
-    taughtBy = db.relationship('Teacher', secondary = Teaches, backref = 'taughtby') 
-    lazy2 = db.relationship('Icarus', back_populates = 'course')
-    def __init__(self, course_id, teacher, time, enrollment, capacity):
-        self.course_id = course_id
-        self.teacher = teacher
-        self.time = time 
-        self.enrollment = enrollment
-        self.capacity = capacity
-
-class Roster(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-    class_id = db.Column('course_id', db.Integer, db.ForeignKey('course.id'))
-    grade = db.Column('grade', db.String)
-    user = db.relationship('User', back_populates = 'scheduele')
-    course = db.relationship('Course', back_populates = 'learners')
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, unique = True, nullable = False)
-    authentication = db.Column(db.String, nullable = False)
-    username = db.Column(db.String, unique = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-    scheduele = db.relationship('Roster', back_populates ='user')
-    instructor = db.relationship('Attendance', back_populates ='user')
-    lazy1 = db.relationship('Icarus', back_populates = 'user')
-    def __repr__(self):
-        return f'Student: {self.name}'   
-
-class Teacher(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, unique = True, nullable = False)
-    authentication = db.Column(db.String, nullable = False)
-    username = db.Column(db.String, unique = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-    philosopher = db.relationship('Attendance', back_populates = 'teacher')
-    def __repr__(self):
-        return f'{self.name}'
-    
-class Attendance(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-    teacher_id = db.Column('teacher_id', db.Integer, db.ForeignKey('teacher.id'))
-    user = db.relationship('User', back_populates = 'instructor')
-    teacher = db.relationship('Teacher', back_populates = 'philosopher')
-
-class Admins(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, unique = True, nullable = False)
-    authentication = db.Column(db.String, nullable = False)
-    username = db.Column(db.String, unique = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-'''
+    post = db.Column(db.Text)
+    response = db.Column(db.Text)
+    asker = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reponser = db.Column(db.Integer, db.ForeignKey('user.id'))
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
