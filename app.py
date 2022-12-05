@@ -34,8 +34,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String, unique = True, nullable = False)
     username = db.Column(db.String, unique = True, nullable = False)
     password = db.Column(db.String, nullable = False)
-    inquiry = db.relationship('Question', foreign_keys = 'Post.asker', backref = 'ask', lazy = True)
-    Reply = db.relationship('Question', foreign_keys ='Post.responser', backref = 'response', lazy = True)
+    inquiry = db.relationship('Post', foreign_keys = 'Post.asker', backref = 'ask', lazy = True)
+    reply = db.relationship('Post', foreign_keys ='Post.responser', backref = 'respond', lazy = True)
     def __repr__(self):
         return f'Student: {self.name}'   
 
@@ -44,7 +44,7 @@ class Post(db.Model, UserMixin):
     post = db.Column(db.Text)
     response = db.Column(db.Text)
     asker = db.Column(db.Integer, db.ForeignKey('user.id'))
-    reponser = db.Column(db.Integer, db.ForeignKey('user.id'))
+    responser = db.Column(db.Integer, db.ForeignKey('user.id'))
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
@@ -82,49 +82,25 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('student', name=user.name, ID=user.id))
+                return redirect(url_for('dashboard', name=user.name, ID=user.id))
     return render_template('login.html', form = form)
 
+@app.route('/dashboard', methods = ['GET'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
+@app.route('/logout', methods = ['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 '''
 @app.route('/student', methods = ['GET'])
 @login_required
 def student():
     classes = Icarus.query.filter_by(user_id = current_user.id).all() 
     return render_template('student_page.html', classes = classes)
-
-@app.route('/register', methods = ['GET', 'POST'])
-def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        if form.authentication.data == 'Student':
-            new_user = User(name = form.name.data, authentication = form.authentication.data, username = form.username.data, password = hashed_password)
-        elif form.authentication.data == 'Teacher':
-            new_user = Teacher(name = form.name.data, authentication = form.authentication.data, username = form.username.data, password = hashed_password)
-        else:
-            new_user = Admins(name = form.name.data, authentication = form.authentication.data, username = form.username.data, password = hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-    return render_template('Register.html', form = form)
-
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if User.query.filter_by(username = form.username.data).first():
-            user = User.query.filter_by(username = form.username.data).first()
-        elif Teacher.query.filter_by(username = form.username.data).first():
-            user = Teacher.query.filter_by(username = form.username.data).first()
-        elif Admins.query.filter_by(username = form.username.data).first():
-            user = Admins.query.filter_by(username = form.username.data).first()
-        if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user)
-                if user.authentication == 'Student':
-                    return redirect(url_for('student', name=user.name, ID=user.id))
-    return render_template('login.html', form = form)
 
 @app.route('/instructor', methods = ['GET'])
 #@login_required
@@ -185,12 +161,6 @@ def add():
         db.session.commit()
         flash("Class added!", "info")
         return redirect(url_for('add'))
-
-@app.route('/logout', methods = ['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
 '''
 
 @app.route("/")
