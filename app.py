@@ -90,6 +90,11 @@ class LoginForm(FlaskForm):
     username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Login")
+    
+@app.route('/about', methods = ['GET'])
+# @login_required
+def aboot():
+    return render_template('about.html')
 
 @app.route('/dashboard', methods = ['GET'])
 @login_required
@@ -101,9 +106,13 @@ def dashboard():
 def question():
     return render_template('question.html')
 
+
+
+
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    # return "Hello, Flask!"
+    return redirect(url_for('aboot'))
 
 if __name__ == '__main__':
     app.run()
