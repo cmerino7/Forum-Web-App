@@ -90,6 +90,11 @@ class LoginForm(FlaskForm):
     username = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "username"})
     password = PasswordField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "password"})
     submit = SubmitField("Login")
+    
+@app.route('/about', methods = ['GET'])
+# @login_required
+def aboot():
+    return render_template('about.html')
 
 @app.route('/dashboard', methods = ['GET'])
 @login_required
@@ -100,6 +105,9 @@ def dashboard():
 @login_required
 def question():
     return render_template('question.html')
+
+
+
 
 @app.route("/")
 def home():
