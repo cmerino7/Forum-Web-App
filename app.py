@@ -103,7 +103,7 @@ def question():
 
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run()
