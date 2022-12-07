@@ -3,15 +3,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <div class = "transbox">
     <head>
-        <p stylr="text-align: center;"> Would you like to post a question?</p>
-        <p style="text-align: right;"> <a href={{ url_for('question') }}>Logout</a></p>
-        <h1>ACME University</h1>
+        <h1>ACME Forums</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-        
     </head>
 
     <body>
+    <div class="outerbox">
+        <h1>Post Your Own Questions: </h1>
+        <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
+        <p style="text-align: right;"><a href={{ url_for('question') }}>Post Question</a></p>
+    </div>
+    <br>
+
+    <div class="innerbox">
+        <table>
+            <tr>
+                <th>
+                    <h1>Post Header</h1>
+                </th>
+            </tr>
+            <tr>
+                <td>Post Description</td>
+            </tr>
+        </table>
+    </div>
     </body>
 </div>
 </html>
