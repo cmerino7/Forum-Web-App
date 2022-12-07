@@ -77,7 +77,7 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('dashboard', name=user.name, ID=user.id))
+                return redirect(url_for('dashboard'))
     return render_template('login.html', form = form)
 
 @app.route('/logout', methods = ['GET', 'POST'])
@@ -99,12 +99,20 @@ def aboot():
 @app.route('/dashboard', methods = ['GET'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    preguntas = Post.query.filter_by().all()
+    return render_template('dashboard.html', preguntas = preguntas)
 
 @app.route('/question', methods = ['GET', 'POST'])
 @login_required
 def question():
-    return render_template('question.html')
+    if(request.method == 'GET'):
+        return render_template('question.html')
+    elif(request.method == 'POST'):
+        post = request.form['askquestion']
+        input = Post(post = post, response = 'NULL', asker = current_user.id)
+        db.session.add(input)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
 
 @app.route("/")
 def home():
@@ -124,7 +132,7 @@ def student():
     return render_template('student_page.html', classes = classes)
 
 @app.route('/instructor', methods = ['GET'])
-#@login_required
+@login_required
 def instructor():
     instructorName = request.args.get('name') 
     instructorID = request.args.get('ID') 

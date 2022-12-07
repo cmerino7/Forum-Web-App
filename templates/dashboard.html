@@ -7,6 +7,11 @@
         <p style="text-align: right;"> <a href={{ url_for('question') }}>Post Question</a></p>
         <h1>ACME University</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
+        <div class="list-group">
+            {% for question in preguntas %}
+                <h4 class="list-group-item-heading">{{ question.question }}</h4>
+                <p class="list-group-item-text">Asked by: {{ question.post }}</p>
+            {% endfor %}
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
         
     </head>
