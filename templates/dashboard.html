@@ -1,24 +1,44 @@
 <html>
-    <title>Lab 8</title>
+    <title>ACME Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <div class = "transbox">
     <head>
-        <p stylr="text-align: center;"> Would you like to post a question?</p>
-        <p style="text-align: right;"> <a href={{ url_for('question') }}>Post Question</a></p>
         <h1>ACME University</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
-        <div class="list-group">
-            {% for question in preguntas %}
+        <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
+        {% for question in preguntas %}
             <a href="{{ url_for('response', question_id=question.id) }}" class="list-group-item">
                 <h4 class="list-group-item-heading">{{ question.post }}</h4>
                 <p class="list-group-item-text">Asked by: {{ question.ask.name }}</p>
             </a>
             {% endfor %}
-        <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-        
     </head>
 
     <body>
-    </body>
+        <div class="outerbox">
+            <h1>Post Your Own Question: </h1>
+            <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
+            <p style="text-align: right;"><a href={{ url_for('question') }}>Post Question</a></p>
+        </div>
+        <p></p>
+        <p></p>
+    
+        <div class="innerbox">
+            <table>
+                {% for question in preguntas %}
+                <a href="{{ url_for('response', question_id=question.id) }}" class="list-group-item">
+                <tr>
+                    <th>
+                        <h1>question.post</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>question.ask.name</td>
+                </tr>
+                </a>
+                {% endfor %}
+            </table>
+        </div>
+        </body>
 </div>
 </html>
