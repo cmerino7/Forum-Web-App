@@ -1,44 +1,42 @@
 <html>
-    <title>ACME Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <div class = "transbox">
+<title>ACME Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="transbox">
+
     <head>
         <h1>ACME University</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-        {% for question in preguntas %}
-            <a href="{{ url_for('response', question_id=question.id) }}" class="list-group-item">
-                <h4 class="list-group-item-heading">{{ question.post }}</h4>
-                <p class="list-group-item-text">Asked by: {{ question.ask.name }}</p>
-            </a>
-            {% endfor %}
     </head>
 
     <body>
         <div class="outerbox">
-            <h1>Post Your Own Question: </h1>
-            <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
-            <p style="text-align: right;"><a href={{ url_for('question') }}>Post Question</a></p>
-        </div>
+            <h1>Post Your Own Questions: </h1>
+                <form class="form-control" method="POST" action="{{url_for('question')}}">
+                    <textarea class="form-control" id="askquestion"
+                        name="askquestion" rows="5" cols="60"></textarea>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
         <p></p>
         <p></p>
-    
+
         <div class="innerbox">
             <table>
-                {% for question in preguntas %}
-                <a href="{{ url_for('response', question_id=question.id) }}" class="list-group-item">
+                {% for something in preguntas %}
                 <tr>
                     <th>
-                        <h1>question.post</h1>
+                        <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
+                            <h1>{{ something.post }}</h1>
+                        </a>
                     </th>
                 </tr>
                 <tr>
-                    <td>question.ask.name</td>
+                    <td>Posted By: {{ something.ask.name }}</td>
                 </tr>
-                </a>
                 {% endfor %}
             </table>
         </div>
-        </body>
+    </body>
 </div>
+
 </html>
