@@ -8,7 +8,7 @@
         <h1>ACME University</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
         <div class="list-group">
-            {% for question in preguntas %}
+            {% for question in questions %}
             <a href="{{ url_for('response', question_id=question.id) }}" class="list-group-item">
                 <h4 class="list-group-item-heading">{{ question.post }}</h4>
                 <p class="list-group-item-text">Asked by: {{ question.ask.name }}</p>

@@ -114,6 +114,13 @@ def question():
         db.session.commit()
         return redirect(url_for('dashboard'))
 
+@app.route('/response/<int:question_id>', methods = ['GET'])
+@login_required
+def response(question_id):
+    questions = Post.query.filter_by(id = question_id).all()
+
+    return render_template('response.html', questions = questions)
+
 @app.route("/")
 def home():
     return render_template('about.html')
