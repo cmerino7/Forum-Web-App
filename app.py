@@ -114,12 +114,21 @@ def question():
         db.session.commit()
         return redirect(url_for('dashboard'))
 
-@app.route('/response/<int:question_id>', methods = ['GET'])
+@app.route('/response/<int:question_id>', methods = ['GET', 'POST'])
 @login_required
 def response(question_id):
-    questions = Post.query.filter_by(id = question_id).all()
+    questions = Post.query.get_or_404(question_id)
+    print(questions.id)
+    if(request.method == 'GET'):
+        print("HERE")
+        return render_template('response.html', questions = questions)
+    elif(request.method == 'POST'):
+        questions.response = request.form['answer']
+        questions.responser = current_user.id
+        db.session.commit()
+        return redirect( url_for('dashboard'))
 
-    return render_template('response.html', questions = questions)
+
 
 @app.route("/")
 def home():
