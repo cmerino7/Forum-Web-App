@@ -1,10 +1,8 @@
 <html>
-    <title>Lab 8</title>
+    <title>ACME Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <div class = "transbox">
     <head>
-        <p stylr="text-align: center;"> Would you like to post a question?</p>
-        <p style="text-align: right;"> <a href={{ url_for('question') }}>Post Question</a></p>
         <h1>ACME University</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
@@ -12,6 +10,68 @@
     </head>
 
     <body>
-    </body>
+        <div class="outerbox">
+            <h1>Post Your Own Question: </h1>
+            <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
+            <p style="text-align: right;"><a href={{ url_for('question') }}>Post Question</a></p>
+        </div>
+        <p></p>
+        <p></p>
+    
+        <div class="innerbox">
+            <table>
+                <tr>
+                    <th>
+                        <h4>Posted by: MrSwedishFish</h4>
+                        <h1>Bout to go fight Radahn, I'll post the vid after.</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>He was nerfed to the point a crippled baby can beat him, how hard could it be?</h4>
+                        <img src="static/css/radahn.jpg" style="width:600px;height:400px;">
+                    </td>
+                </tr>
+            </table>
+            <p></p>
+
+            <table>
+                <tr>
+                    <th>
+                        <h4>Posted by: MrSwedishFish</h4>
+                        <h1>Nope.</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>Bruh, I just got my ass kicked, I ain't posting that shit.</td>
+                </tr>
+            </table>
+            <p></p>
+
+            <table>
+                <tr>
+                    <th>
+                        <h1>Post2 Header</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>Post3 Description</td>
+                </tr>
+            </table>
+            <p></p>
+
+            <table>
+                <tr>
+                    <th>
+                        <h1>Post4 Header</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>Post4 Description</td>
+                </tr>
+            </table>
+            <p></p>
+        </div>
+        </body>
 </div>
 </html>

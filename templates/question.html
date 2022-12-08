@@ -3,15 +3,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <div class = "transbox">
     <head>
-        <p stylr="text-align: center;"> Would you like to post a question?</p>
-        <p style="text-align: right;"> <a href={{ url_for('question') }}>Logout</a></p>
-        <h1>ACME University</h1>
+        <h1>ACME Forums</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-        
     </head>
 
     <body>
+    <div class="outerbox">
+        <table>
+            <tr>
+                <tr>
+                    <th style="text-align: left;">
+                        <h4>Posted by: MrSwedishFish</h4>
+                        <h1>Bout to go fight Radahn, I'll post the vid after.</h1>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>He was nerfed to the point a crippled baby can beat him, how hard could it be?</h4>
+                        <img src="static/css/radahn.jpg" style="width:600px;height:400px;">
+                    </td>
+                </tr>
+        </table>
+    </div>
+    <p></p>
+
+    <div class="innerbox">
+       <table style="width:600px;">
+        <tr>
+            <th style="text-align: left;">Comments: </th>
+        </tr>
+        <tr>
+            <td><p><h4>LiquidWolf88: </h4></p>
+           Bruh, you thought Soldier of Godrick was enough to be called a boss. He about to loosen that booty.</td>
+        </tr>
+       </table> 
+    </div>
     </body>
 </div>
 </html>
