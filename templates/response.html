@@ -10,7 +10,10 @@
             <h1>Current Discussion: </h1>
             <p style="text-align: left;">Hello, here are the questions:</p>
             <div class="list-group">
-                <h4 class="list-group-item-heading">{{ questions.post }}</h4>
+                <h4 class="list-group-item-heading">{{ questions.posts }}</h4>
+                {% for something in replys %}
+                    {{something.posts}} {{something.post.name}}
+                {% endfor %}
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
                     <button type="submit" class="btn btn-primary">Submit</button>

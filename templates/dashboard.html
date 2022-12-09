@@ -26,12 +26,12 @@
                 <tr>
                     <th>
                         <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
-                            <h1>{{ something.post }}</h1>
+                            <h1>{{ something.posts }}</h1>
                         </a>
                     </th>
                 </tr>
                 <tr>
-                    <td>Posted By: {{ something.ask.name }}</td>
+                    <td>Posted By: {{ something.name }}</td>
                 </tr>
                 {% endfor %}
             </table>
