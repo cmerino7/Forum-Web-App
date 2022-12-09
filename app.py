@@ -34,17 +34,22 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String, unique = True, nullable = False)
     username = db.Column(db.String, unique = True, nullable = False)
     password = db.Column(db.String, nullable = False)
-    inquiry = db.relationship('Post', foreign_keys = 'Post.asker', backref = 'ask', lazy = True)
-    reply = db.relationship('Post', foreign_keys ='Post.responser', backref = 'respond', lazy = True)
     def __repr__(self):
         return f'Student: {self.name}'   
 
-class Post(db.Model, UserMixin):
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    post = db.Column(db.Text)
-    response = db.Column(db.Text)
-    asker = db.Column(db.Integer, db.ForeignKey('user.id'))
-    responser = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String)
+    posts = db.Column(db.Text)
+    likes = db.Column(db.Integer)
+    reply = db.relationship('Replies', backref = 'post')
+
+class Replies(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    posts = db.Column(db.Text)
+    name = db.Column(db.String)
+    likes = db.Column(db.Integer)
+    response = db.Column(db.Integer, db.ForeignKey('post.id'))
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
@@ -92,7 +97,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
     
 @app.route('/about', methods = ['GET'])
-# @login_required
 def aboot():
     return render_template('about.html')
 
@@ -109,7 +113,8 @@ def question():
         return render_template('question.html')
     elif(request.method == 'POST'):
         post = request.form['askquestion']
-        input = Post(post = post, response = 'NULL', asker = current_user.id)
+        stuff = User.query.filter_by(id = current_user.id).first()
+        input = Post(posts = post, name = stuff.name, likes = 0)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))
@@ -118,17 +123,23 @@ def question():
 @login_required
 def response(question_id):
     questions = Post.query.get_or_404(question_id)
-    print(questions.id)
+    replys = Replies.query.filter_by().all()
     if(request.method == 'GET'):
-        print("HERE")
-        return render_template('response.html', questions = questions)
+        return render_template('response.html', questions = questions, replys = replys)
     elif(request.method == 'POST'):
-        questions.response = request.form['answer']
-        questions.responser = current_user.id
+        person = User.query.filter_by(id = current_user.id).first()
+        temp = request.form['answer']
+        stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions)
+        db.session.add(stuff)
         db.session.commit()
         return redirect( url_for('dashboard'))
 
-
+@app.route('/find', methods = ['POST'])
+@login_required
+def find():
+    temp = request.form['filtered']
+    scope = Post.query.filter(Post.posts.contains(temp))
+    return render_template('find.html', preguntas = scope)
 
 @app.route("/")
 def home():
