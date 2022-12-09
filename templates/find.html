@@ -11,7 +11,7 @@
 
     <head>
         <h1>ACME University</h1>
-        <p style="text-align: left;">Hello, here are the questions:</p>
+        <p style="text-align: left;">Hello, here are the filtered questions:</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
     </head>
 
@@ -25,7 +25,6 @@
                 </form>
         <p></p>
         <p></p>
-
         <div class="innerbox">
             <table>
                 {% for something in preguntas %}

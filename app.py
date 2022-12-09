@@ -41,12 +41,14 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     posts = db.Column(db.Text)
+    likes = db.Column(db.Integer)
     reply = db.relationship('Replies', backref = 'post')
 
 class Replies(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     posts = db.Column(db.Text)
     name = db.Column(db.String)
+    likes = db.Column(db.Integer)
     response = db.Column(db.Integer, db.ForeignKey('post.id'))
     
 class RegisterForm(FlaskForm):
@@ -95,7 +97,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
     
 @app.route('/about', methods = ['GET'])
-# @login_required
 def aboot():
     return render_template('about.html')
 
@@ -113,7 +114,7 @@ def question():
     elif(request.method == 'POST'):
         post = request.form['askquestion']
         stuff = User.query.filter_by(id = current_user.id).first()
-        input = Post(posts = post, name = stuff.name)
+        input = Post(posts = post, name = stuff.name, likes = 0)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))
@@ -128,12 +129,17 @@ def response(question_id):
     elif(request.method == 'POST'):
         person = User.query.filter_by(id = current_user.id).first()
         temp = request.form['answer']
-        stuff = Replies(posts = temp, name = person.name, post = questions)
+        stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions)
         db.session.add(stuff)
         db.session.commit()
         return redirect( url_for('dashboard'))
 
-
+@app.route('/find', methods = ['POST'])
+@login_required
+def find():
+    temp = request.form['filtered']
+    scope = Post.query.filter(Post.posts.contains(temp))
+    return render_template('find.html', preguntas = scope)
 
 @app.route("/")
 def home():
