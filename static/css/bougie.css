@@ -4,22 +4,75 @@
 
 body
 {
-  margin:0px;
-  padding:0px;
+  margin-left:56px;
+  /* padding:0px; */
 	font-family: "Open Sans", arial;
 	background:url('statue.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
     background-repeat: no-repeat;
-    background-size: 75%;
+    background-position: center; 
+    background-size: cover;
+    background-color: rgb(87, 87, 87);
+    /* box-shadow: 0 0 8px 8px white inset; */
+    background-blend-mode: multiply;
 	color:#fff;
 	font-weight:300;
 
 }
 
+.transbox {
+  /* border: 2px solid green; */
+}
 
+.outerbox{
+  /* border: 2px solid red; */
+  text-align: center;
+}
 
+.innerbox{ /* LIST OF POSTS OR QUESTIONS */
+  /* border: 3px solid blue; */
+  overflow: auto;
+  padding: 50px;
+  height:500px;
+}
 
-.logo{
+table.questionTable {
+  /* border: 2px solid white; */
+  width: 100%;
+  /* margin: 0px 50px 50px 50px; */
+  /* border-radius: 10px; */
+  border-collapse:separate;
+  border-spacing: 10;
+
+}
+
+/* tr {
+  margin: 2px;
   
+} */
+
+th{
+  text-align: left;  
+
+}
+
+td{
+  margin: 20px;
+  background-color: #252525;
+  /* border: solid 2px #000; */
+  border-radius: 35px;
+  /* border-style: none solid solid none; */
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;    border-radius: 10px;
+
+  
+}
+
+html{
+  /* margin:20px; */
+
 }
 
 .settings {
@@ -41,7 +94,7 @@ font-family: 'Strait', sans-serif;
 
 
 
-/* ScrolBar  */
+/* ScrolBar  
 .scrollbar
 {
 
@@ -60,7 +113,7 @@ overflow-y: scroll;
 overflow-x: hidden;
 }
 
-/* Scrollbar Style */ 
+ Scrollbar Style */ 
 
 
 
@@ -111,7 +164,7 @@ opacity:1;
 }
 
 .main-menu {
-background:#F7F7F7;
+background:#252525;
 position:absolute;
 top:0;
 bottom:0;
@@ -153,9 +206,9 @@ text-decoration:none;
 -webkit-transition:all .14s linear;
 transition:all .14s linear;
 font-family: 'Strait', sans-serif;
-border-top:1px solid #f2f2f2;
+border-top:1px solid #353535;
 
-text-shadow: 1px 1px 1px  #fff;  
+text-shadow: 1px 1px 1px  rgb(0, 0, 0);  
 }
 
 

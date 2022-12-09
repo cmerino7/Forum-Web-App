@@ -135,7 +135,7 @@ def home():
     return render_template('about.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 with app.app_context():
     db.create_all()
