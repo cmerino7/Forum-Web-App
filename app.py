@@ -46,6 +46,7 @@ class Post(db.Model):
 class Replies(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     posts = db.Column(db.Text)
+    name = db.Column(db.String)
     response = db.Column(db.Integer, db.ForeignKey('post.id'))
     
 class RegisterForm(FlaskForm):
@@ -125,8 +126,9 @@ def response(question_id):
     if(request.method == 'GET'):
         return render_template('response.html', questions = questions, replys = replys)
     elif(request.method == 'POST'):
+        person = User.query.filter_by(id = current_user.id).first()
         temp = request.form['answer']
-        stuff = Replies(posts = temp, post = questions)
+        stuff = Replies(posts = temp, name = person.name, post = questions)
         db.session.add(stuff)
         db.session.commit()
         return redirect( url_for('dashboard'))
