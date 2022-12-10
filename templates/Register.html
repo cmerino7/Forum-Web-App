@@ -1,24 +1,25 @@
 <html>
-<title>Lab 8</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-<div class="transbox">
-
+    <title>Lab 8</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <div class = "transbox">
     <head>
         <h1>ACME University</h1>
     </head>
 
     <body>
-        <div class="outerbox">
-            <h1>Register</h1>
-            <div class="innerbox">
-                <form method="POST" action="">
-                    <p>{{ form.hidden_tag() }}</p>
-                    <p>{{ form.name }}</p>
-                    <p>{{ form.username }}</p>
-                    <p>{{ form.password }}</p>
-                    <p>{{ form.submit }}</p>
-                </form>
-    </body>
-</div>
-
+        <div class="loginbox">
+        <h1>Register</h1>
+        <p>
+            <form method = "POST" action="">
+                <p>{{ form.hidden_tag() }}</p>
+                <p>{{ form.name(class_="form-control-field") }}</p>
+                <p>{{ form.username(class_="form-control-field") }}</p>
+                <p>{{ form.password(class_="form-control-field") }}</p>
+                <p>{{ form.submit(class_="form-control-button")  }}</p>
+            </form>
+            Already a member? <a href="{{(url_for('login'))}}">Sign In Here</a>
+        </p>
+        </div>
+        </body>
+    </div>
 </html>
