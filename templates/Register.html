@@ -5,17 +5,21 @@
     <head>
         <h1>ACME University</h1>
     </head>
+
     <body>
-        <div class="outerbox">
-            <h1>Register</h1>
-            <div class="innerbox">
+        <div class="loginbox">
+        <h1>Register</h1>
+        <p>
             <form method = "POST" action="">
                 <p>{{ form.hidden_tag() }}</p>
-                <p>{{ form.name }}</p>
-                <p>{{ form.username }}</p>
-                <p>{{ form.password }}</p>
-                <p>{{ form.submit  }}</p>
+                <p>{{ form.name(class_="form-control-field") }}</p>
+                <p>{{ form.username(class_="form-control-field") }}</p>
+                <p>{{ form.password(class_="form-control-field") }}</p>
+                <p>{{ form.submit(class_="form-control-button")  }}</p>
             </form>
-    </body>
+            Already a member? <a href="{{(url_for('login'))}}">Sign In Here</a>
+        </p>
+        </div>
+        </body>
     </div>
 </html>

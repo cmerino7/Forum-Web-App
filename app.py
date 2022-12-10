@@ -139,7 +139,7 @@ def response(question_id):
 def find():
     temp = request.form['filtered']
     scope = Post.query.filter(Post.posts.contains(temp))
-    return render_template('find.html', preguntas = scope)
+    return render_template('find.html', preguntas = scope, result=temp)
 
 @app.route("/")
 def home():

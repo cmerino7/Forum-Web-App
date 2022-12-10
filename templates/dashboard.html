@@ -3,22 +3,20 @@
 <!--link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"-->
 <div class="transbox">
 
-    <div class="topnav">
-        <form class="form-control" method="POST" action="{{url_for('find')}}">
-            <input type="text" name="filtered" placeholder="Search..">
-        </form>
-    </div>
-
     <head>
-        <h1>ACME University</h1>
-        <p style="text-align: left;">Hello, here are the questions:</p>
-        <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
+        <h1 class="pageTitle">New Questions:</h1>
         <link rel="stylesheet" href="{{ url_for('static', filename='/css/bougie.css') }}">
         <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     </head>
 
     <body>
         <nav class="main-menu">
+            <div class="topnav">
+                <i class="fa fa-search fa-lg"></i>
+                <form class="form-control" method="POST" action="{{url_for('find')}}">
+                    <input id="navSearch" type="text" name="filtered" placeholder="Search...">
+                </form>
+            </div>
             <div>
                 <a class="logo" href="{{ url_for('aboot')}}"></a>
             </div>
@@ -57,15 +55,36 @@
                             </a>
                         </li>
                     </ul>
+                </div>
             </nav>
-        
-        
-            <div class="outerbox">
-            <h1>Post Your Own Questions: </h1>
+            <div class="newPostButton">
+                <button id="askButton" class="button-41" type="button" onclick="myFunction()">Ask a Question!</button>
+                <button id="closeButton" class="button-41" type="button" onclick="myFunction()">Close</button>
+            </div>
+            <script>
+                function myFunction() {
+                    var x = document.getElementById("newPost");
+                    var y = document.getElementById("closeButton");
+                    var z = document.getElementById("askButton")
+                        if (x.style.display === "block") {
+                            x.style.display = "none";
+                        } else {
+                            x.style.display = "block";
+                        }
+                        if (y.style.display === "block") {
+                            y.style.display = "none";
+                            z.style.display = "block";
+                        } else {
+                            y.style.display = "block";
+                            z.style.display = "none";
+                        }
+                    } 
+            </script>
+            <div id="newPost" class="newPost">
+            <h1>Post A Question: </h1>
                 <form class="form-control" method="POST" action="{{url_for('question')}}">
-                    <textarea class="form-control" id="askquestion"
-                        name="askquestion" rows="5" cols="60"></textarea>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <textarea class="form-control" id="askquestion" name="askquestion" rows="5" cols="60"></textarea><br>
+                    <button id="submitBtn" class="button-41" type="submit" class="btn btn-primary">Submit</button>
                 </form>
         <p></p>
         <p></p>
@@ -75,9 +94,18 @@
                 {% for something in preguntas %}
                 <tr>
                     <th>
-                        <td>
-                            <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item"><h1>{{ something.post }}</h1></a>
-                            Posted By: {{ something.ask.name }}
+                        <td> 
+                            <div class="commenterLikes2">
+                                <a class="commenterUpLikes2" href="upboats"><i class="fa fa-chevron-circle-up fa-2x" aria-hidden="true"></i></a>
+                                <p class="commenterLikesNum2">{{something.likes}}</p>
+                                <a class="commenterDownLikes2" href="downboats"><i class="fa fa-chevron-circle-down fa-2x" aria-hidden="true"></i></a></div>
+                            </div>
+                            <div class="postTitle">
+                            <a href="{{ url_for('response', question_id=something.id) }}"><h1 class="list-group-item">{{ something.posts }}</h1></a>
+                            </div>
+                            <div class="poster">
+                            Posted By: {{ something.name }}
+                            </div>
                         </td>
                     </th>
                 </tr>
