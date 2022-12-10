@@ -18,30 +18,29 @@
     <body>
         <div class="outerbox">
             <h1>Post Your Own Questions: </h1>
-                <form class="form-control" method="POST" action="{{url_for('question')}}">
-                    <textarea class="form-control" id="askquestion"
-                        name="askquestion" rows="5" cols="60"></textarea>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-        <p></p>
-        <p></p>
+            <form class="form-control" method="POST" action="{{url_for('question')}}">
+                <textarea class="form-control" id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <p></p>
+            <p></p>
 
-        <div class="innerbox">
-            <table>
-                {% for something in preguntas %}
-                <tr>
-                    <th>
-                        <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
-                            <h1>{{ something.posts }}</h1>
-                        </a>
-                    </th>
-                </tr>
-                <tr>
-                    <td>Posted By: {{ something.name }} {{something.likes}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+            <div class="innerbox">
+                <table>
+                    {% for something in preguntas %}
+                    <tr>
+                        <th>
+                            <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
+                                <h1>{{ something.posts }}</h1>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Posted By: {{ something.name }} {{something.likes}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
     </body>
 </div>
 

@@ -12,11 +12,12 @@
             <div class="list-group">
                 <h4 class="list-group-item-heading">{{ questions.posts }}</h4>
                 {% for something in replys %}
-                    {{something.posts}} 
-                    {{something.name}}
-                    <a href="{{ url_for('upvote', reply=something.id) }}" class="list-group-item">
-                        <h1>{{ something.likes }}</h1>
-                    </a>
+                {{something.posts}}
+                {{something.name}}
+                <a href="{{ url_for('upvote', reply=something.id) }}" class="list-group-item">
+                    <span>&#8593;</span>
+                </a>
+                {{ something.likes }}
                 {% endfor %}
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
@@ -30,4 +31,5 @@
     </body>
 </div>
 {% endblock %}
+
 </html>
