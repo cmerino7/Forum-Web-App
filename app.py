@@ -29,13 +29,13 @@ def load_user(user_id):
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app) 
 
-class User(db.Model, UserMixin):
+class Vote(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, unique = True, nullable = False)
-    username = db.Column(db.String, unique = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-    def __repr__(self):
-        return f'Student: {self.name}'   
+    choice = db.Column(db.Boolean, nullable = False)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+    replies_id = db.Column('replies_id', db.Integer, db.ForeignKey('replies.id'))
+    replies = db.relationship('Replies', back_populates = 'user_votes')
+    user = db.relationship('User', back_populates = 'post_votes')
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -44,12 +44,20 @@ class Post(db.Model):
     likes = db.Column(db.Integer)
     reply = db.relationship('Replies', backref = 'post')
 
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String, unique = True, nullable = False)
+    username = db.Column(db.String, unique = True, nullable = False)
+    password = db.Column(db.String, nullable = False)
+    post_votes = db.relationship('Vote', back_populates='user')
+
 class Replies(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     posts = db.Column(db.Text)
     name = db.Column(db.String)
     likes = db.Column(db.Integer)
     response = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user_votes = db.relationship('Vote', back_populates='replies')
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
@@ -123,7 +131,7 @@ def question():
 @login_required
 def response(question_id):
     questions = Post.query.get_or_404(question_id)
-    replys = Replies.query.filter_by().all()
+    replys = Replies.query.filter_by(response = question_id).all()
     if(request.method == 'GET'):
         return render_template('response.html', questions = questions, replys = replys)
     elif(request.method == 'POST'):
@@ -133,6 +141,18 @@ def response(question_id):
         db.session.add(stuff)
         db.session.commit()
         return redirect( url_for('dashboard'))
+
+@app.route('/upvote/<int:reply>', methods = ['GET'])
+def upvote(reply):
+    if Vote.query.filter_by(user_id = current_user.id, replies_id = reply).first():
+        return "You've all ready responded"
+    user_id = User.query.filter_by(id = current_user.id).first()
+    post_id = Replies.query.filter_by(id = reply).first()
+    brakeance = Vote(choice = True, user_id = user_id.id, replies_id = post_id.id)
+    post_id.likes = post_id.likes + 1
+    db.session.add(brakeance)
+    db.session.commit()
+    return redirect(url_for('dashboard'))
 
 @app.route('/find', methods = ['POST'])
 @login_required

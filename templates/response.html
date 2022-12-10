@@ -14,7 +14,9 @@
                 {% for something in replys %}
                     {{something.posts}} 
                     {{something.name}}
-                    {{something.likes}}
+                    <a href="{{ url_for('upvote', reply=something.id) }}" class="list-group-item">
+                        <h1>{{ something.likes }}</h1>
+                    </a>
                 {% endfor %}
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
