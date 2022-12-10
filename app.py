@@ -18,6 +18,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(courses, 'db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'EldenRing'
 
+salt = "SUPERSECRET" 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -74,7 +76,7 @@ class RegisterForm(FlaskForm):
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.generate_password_hash(form.password.data + salt)
         new_user = User(name = form.name.data, username = form.username.data, password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -88,7 +90,7 @@ def login():
         if User.query.filter_by(username = form.username.data).first():
             user = User.query.filter_by(username = form.username.data).first()
         if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
+            if bcrypt.check_password_hash(user.password, form.password.data + salt):
                 login_user(user)
                 return redirect(url_for('dashboard'))
     return render_template('login.html', form = form)
