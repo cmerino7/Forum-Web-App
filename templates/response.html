@@ -4,6 +4,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 <div class="transbox">
 
+    {% with messages = get_flashed_messages() %}
+                {% if messages  %}
+                    {% for msg in messages %}
+                        <p> {{msg}} </p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
     <head>
         <h1>ACME University</h1>
         <div class="outerbox">
@@ -14,10 +21,13 @@
                 {% for something in replys %}
                 {{something.posts}}
                 {{something.name}}
-                <a href="{{ url_for('upvote', reply=something.id) }}" class="list-group-item">
+                <a href="{{ url_for('upvote', reply=something.id, truthfullness = True) }}" class="list-group-item">
                     <span>&#8593;</span>
                 </a>
                 {{ something.likes }}
+                <a href="{{ url_for('upvote', reply=something.id, truthfullness = False) }}" class="list-group-item">
+                    <span>&#8595;</span>
+                </a>
                 {% endfor %}
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
