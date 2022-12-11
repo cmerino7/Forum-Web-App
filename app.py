@@ -43,7 +43,6 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     posts = db.Column(db.Text)
-    likes = db.Column(db.Integer)
     reply = db.relationship('Replies', backref = 'post')
 
 class User(db.Model, UserMixin):
