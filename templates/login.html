@@ -1,28 +1,32 @@
 <html>
-    <title>Lab 8</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <div class = "transbox">
+<title>ACME Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="transbox">
+
     <head>
-        <div class = "transbox">
-            <h1>ACME University</h1>
-        </div>
+        <h1>Login to ACME Forums</h1>
     </head>
 
     <body>
         <div class="outerbox">
-        <h1>Login</h1>
-        <p>
-            <form method = "POST" action="">
-                
+            <h1>Login</h1>
+            <p>
+            <div class = "innerbox">
+            <form method="POST" action="">
+
                 <p>{{ form.hidden_tag()}}</p>
+                <p><h3 style = "text-align: left;">Username:</h3></p>
                 <p>{{ form.username }}</p>
+                <p><h3 style = "text-align: left;">Password:</h3></p>
                 <p>{{ form.password }}</p>
-                <p>{{ form.submit  }}</p>
+                <p>{{ form.submit }}</p>
             </form>
-        </p>
-    </div>
-    </div>
-    </body>
+            </div>
+            </p>
+        </div>
 </div>
-<script src = "{{ url_for('static', filename = 'js/learn.js')}}" ></script>
+</body>
+</div>
+<script src="{{ url_for('static', filename = 'js/learn.js')}}"></script>
+
 </html>
