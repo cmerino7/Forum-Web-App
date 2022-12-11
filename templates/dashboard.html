@@ -1,77 +1,48 @@
 <html>
-    <title>ACME Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <div class = "transbox">
+<title>ACME Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="transbox">
+
+    <div class="topnav">
+        <form class="form-control" method="POST" action="{{url_for('find')}}">
+            <input type="text" name="filtered" placeholder="Search..">
+        </form>
+    </div>
+
     <head>
-        <h1>ACME University</h1>
+        <h1>ACME Forums</h1>
         <p style="text-align: left;">Hello, here are the questions:</p>
+        <p style="text-align: right;">Welcome, {{ user.username }}</p>
         <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-        
     </head>
 
     <body>
         <div class="outerbox">
-            <h1>Post Your Own Question: </h1>
-            <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
-            <p style="text-align: right;"><a href={{ url_for('question') }}>Post Question</a></p>
-        </div>
-        <p></p>
-        <p></p>
-    
-        <div class="innerbox">
-            <table>
-                <tr>
-                    <th>
-                        <h4>Posted by: MrSwedishFish</h4>
-                        <h1>Bout to go fight Radahn, I'll post the vid after.</h1>
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <h4>He was nerfed to the point a crippled baby can beat him, how hard could it be?</h4>
-                        <img src="static/css/radahn.jpg" style="width:600px;height:400px;">
-                    </td>
-                </tr>
-            </table>
+            <h1>Post Your Own Questions: </h1>
+            <form class="form-control" method="POST" action="{{url_for('question')}}">
+                <textarea class="form-control" id="askquestion" name="askquestion" rows="5" cols="60"></textarea>
+                <p><button type="submit" class="btn btn-primary">Submit</button></p>
+            </form>
+            <p></p>
             <p></p>
 
-            <table>
-                <tr>
-                    <th>
-                        <h4>Posted by: MrSwedishFish</h4>
-                        <h1>Nope.</h1>
-                    </th>
-                </tr>
-                <tr>
-                    <td>Bruh, I just got my ass kicked, I ain't posting that shit.</td>
-                </tr>
-            </table>
-            <p></p>
-
-            <table>
-                <tr>
-                    <th>
-                        <h1>Post2 Header</h1>
-                    </th>
-                </tr>
-                <tr>
-                    <td>Post3 Description</td>
-                </tr>
-            </table>
-            <p></p>
-
-            <table>
-                <tr>
-                    <th>
-                        <h1>Post4 Header</h1>
-                    </th>
-                </tr>
-                <tr>
-                    <td>Post4 Description</td>
-                </tr>
-            </table>
-            <p></p>
-        </div>
-        </body>
+            <div class="innerbox">
+                <table>
+                    {% for something in preguntas %}
+                    <tr>
+                        <th>
+                            <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
+                                <h1>{{ something.posts }}</h1>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Posted By: {{ something.name }} {{something.likes}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+    </body>
 </div>
+
 </html>
