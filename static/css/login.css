@@ -1,5 +1,5 @@
 html{
-    background-image: url("WileECyoteACME.png");
+    background-image: url("liurnia.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -18,7 +18,7 @@ div{
 }
 
 div.transbox{
-    background-color: rgba(157, 157, 157, 0.85);
+    background-color: rgba(253, 253, 253, 0.699);
     padding-top: 10px;
     padding-right: 30px;
     padding-left: 30px;
@@ -55,6 +55,40 @@ h1 {
 
 table {
     border: 1px solid rgb(63, 63, 63);
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+table.empty {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+tr.empty {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+td.empty {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
