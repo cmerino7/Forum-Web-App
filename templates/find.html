@@ -58,12 +58,6 @@
                 </div>
             </nav>
         <div class="outerbox">
-            <!--h1>Post Your Own Questions: </h1>
-                <form class="form-control" method="POST" action="{{url_for('question')}}">
-                    <textarea class="form-control" id="askquestion"
-                        name="askquestion" rows="5" cols="60"></textarea>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form-->
                 <h1 class="pageTitle">Results for '{{result}}'</h1>
         <p></p>
         <p></p>
@@ -72,15 +66,12 @@
                 {% for something in preguntas %}
                 <tr>
                     <th>
-                        <td>
+                        <td class="searchresult">
                         <a href="{{ url_for('response', question_id=something.id) }}" class="list-group-item">
                             <h1>{{ something.posts }}</h1>
-                        </a>
+                        </a>Posted By: {{ something.name }}
                     </td>
                     </th>
-                </tr>
-                <tr>
-                    <td>Posted By: {{ something.name }} {{something.likes}}</td>
                 </tr>
                 {% endfor %}
             </table>

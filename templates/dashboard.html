@@ -1,5 +1,5 @@
 <html>
-<title>ACME Dashboard</title>
+<title>Discover the meaning of life</title>
 <!--link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"-->
 <div class="transbox">
 
@@ -95,11 +95,6 @@
                 <tr>
                     <th>
                         <td> 
-                            <div class="commenterLikes2">
-                                <a class="commenterUpLikes2" href="upboats"><i class="fa fa-chevron-circle-up fa-2x" aria-hidden="true"></i></a>
-                                <p class="commenterLikesNum2">{{something.likes}}</p>
-                                <a class="commenterDownLikes2" href="downboats"><i class="fa fa-chevron-circle-down fa-2x" aria-hidden="true"></i></a></div>
-                            </div>
                             <div class="postTitle">
                             <a href="{{ url_for('response', question_id=something.id) }}"><h1 class="list-group-item">{{ something.posts }}</h1></a>
                             </div>

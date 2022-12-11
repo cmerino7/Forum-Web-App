@@ -18,6 +18,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(courses, 'db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'EldenRing'
 
+salt = "SUPERSECRET" 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -29,20 +31,26 @@ def load_user(user_id):
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app) 
 
-class User(db.Model, UserMixin):
+class Vote(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, unique = True, nullable = False)
-    username = db.Column(db.String, unique = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-    def __repr__(self):
-        return f'Student: {self.name}'   
+    choice = db.Column(db.String, nullable = False)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+    replies_id = db.Column('replies_id', db.Integer, db.ForeignKey('replies.id'))
+    replies = db.relationship('Replies', back_populates = 'user_votes')
+    user = db.relationship('User', back_populates = 'post_votes')
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     posts = db.Column(db.Text)
-    likes = db.Column(db.Integer)
     reply = db.relationship('Replies', backref = 'post')
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String, unique = True, nullable = False)
+    username = db.Column(db.String, unique = True, nullable = False)
+    password = db.Column(db.String, nullable = False)
+    post_votes = db.relationship('Vote', back_populates='user')
 
 class Replies(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -50,6 +58,7 @@ class Replies(db.Model):
     name = db.Column(db.String)
     likes = db.Column(db.Integer)
     response = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user_votes = db.relationship('Vote', back_populates='replies')
     
 class RegisterForm(FlaskForm):
     name = StringField(validators = [InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder" : "name"})
@@ -66,7 +75,7 @@ class RegisterForm(FlaskForm):
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.generate_password_hash(form.password.data + salt)
         new_user = User(name = form.name.data, username = form.username.data, password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -80,7 +89,7 @@ def login():
         if User.query.filter_by(username = form.username.data).first():
             user = User.query.filter_by(username = form.username.data).first()
         if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
+            if bcrypt.check_password_hash(user.password, form.password.data + salt):
                 login_user(user)
                 return redirect(url_for('dashboard'))
     return render_template('login.html', form = form)
@@ -114,7 +123,7 @@ def question():
     elif(request.method == 'POST'):
         post = request.form['askquestion']
         stuff = User.query.filter_by(id = current_user.id).first()
-        input = Post(posts = post, name = stuff.name, likes = 0)
+        input = Post(posts = post, name = stuff.name)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))
@@ -123,7 +132,7 @@ def question():
 @login_required
 def response(question_id):
     questions = Post.query.get_or_404(question_id)
-    replys = Replies.query.filter_by().all()
+    replys = Replies.query.filter_by(response = question_id).all()
     if(request.method == 'GET'):
         return render_template('response.html', questions = questions, replys = replys)
     elif(request.method == 'POST'):
@@ -132,7 +141,48 @@ def response(question_id):
         stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions)
         db.session.add(stuff)
         db.session.commit()
-        return redirect( url_for('dashboard'))
+        return redirect( url_for('response'))
+
+@app.route('/upvote/<int:reply>/<string:truthfullness>', methods = ['GET'])
+def upvote(reply, truthfullness):
+    truthfullness = str(truthfullness)
+    if not Vote.query.filter_by(user_id = current_user.id, replies_id = reply).first():
+        if truthfullness == 'True':
+            user_id = User.query.filter_by(id = current_user.id).first()
+            post_id = Replies.query.filter_by(id = reply).first()
+            brakeance = Vote(choice = 'True', user_id = user_id.id, replies_id = post_id.id)
+            post_id.likes = post_id.likes + 1
+            db.session.add(brakeance)
+            db.session.commit()
+            return redirect ( url_for('response', question_id = post_id.response))
+        elif truthfullness == 'False':
+            user_id = User.query.filter_by(id = current_user.id).first()
+            post_id = Replies.query.filter_by(id = reply).first()
+            brakeance = Vote(choice = 'False', user_id = user_id.id, replies_id = post_id.id)
+            post_id.likes = post_id.likes - 1
+            db.session.add(brakeance)
+            db.session.commit()
+            return redirect ( url_for('response', question_id = post_id.response))
+    else:
+        check = Vote.query.filter_by(user_id = current_user.id, replies_id = reply).first()
+        if check.choice == truthfullness:
+            post_id = Replies.query.filter_by(id = reply).first()
+            flash("Sorry, but you've already voted on this", "info")
+            return redirect ( url_for('response', question_id = post_id.response))
+        else:
+            if truthfullness == 'True':
+                post_id = Replies.query.filter_by(id = reply).first()
+                post_id.likes = post_id.likes + 2
+                check.choice = 'True'
+                db.session.commit()
+                return redirect ( url_for('response', question_id = post_id.response))
+            else:
+                post_id = Replies.query.filter_by(id = reply).first()
+                post_id.likes = post_id.likes - 2
+                check.choice = 'False'
+                db.session.commit()
+                return redirect ( url_for('response', question_id = post_id.response))
+
 
 @app.route('/find', methods = ['POST'])
 @login_required
@@ -150,71 +200,3 @@ if __name__ == '__main__':
 
 with app.app_context():
     db.create_all()
-
-'''
-@app.route('/student', methods = ['GET'])
-@login_required
-def student():
-    classes = Icarus.query.filter_by(user_id = current_user.id).all() 
-    return render_template('student_page.html', classes = classes)
-
-@app.route('/instructor', methods = ['GET'])
-@login_required
-def instructor():
-    instructorName = request.args.get('name') 
-    instructorID = request.args.get('ID') 
-    taughtClasses = Course.query.filter_by(teacher=instructorName).all()
-    return render_template('instructor_page.html', displayName=instructorName, id=instructorID, courses=taughtClasses)
-
-@app.route('/<int:id>/<string:className>', methods = ['POST'])
-def changeGrade(id,className):
-    #get current Teacher id and Course
-    currentTeacher = Teacher.query.filter_by(id=id).first()
-    thisClass = Course.query.filter_by(course_id=className).first() #query of Classes matching classname e.g. CSE106 
-    #get new grade from student and their name from frontend
-    newGrade = request.form.get("newGrade")
-    selectedName = request.form.get("selectedName")
-    #update db 
-    selectStudentQuery = User.query.filter_by(name=selectedName).first() #create query of selected student
-    selectGradeQuery = Roster.query.filter_by(user_id=selectStudentQuery.id).first() #get matching student id
-    # selectGradeQuery = Enrollment.query.filter_by(student_id=selectStudentQuery.id, class_id=thisClass.id).first()
-    selectGradeQuery.grade = newGrade
-    db.session.commit()
-    nameGradeTable = User.query.join(Roster, Roster.user_id==User.id).add_columns(User.name, Roster.grade).filter_by(class_id=thisClass.id).all()
-    return render_template('class_1.html', course=thisClass, names=nameGradeTable, ID=id, displayName=currentTeacher)
-
-    
-@app.route('/<int:id>/<string:className>', methods = ['GET'])
-# @login_required
-def coursesTaught(id,className):
-    currentTeacher = Teacher.query.filter_by(id=id).first()
-    thisClass = Course.query.filter_by(course_id=className).first() #query of Classes matching classname e.g. CSE106 
-    nameGradeTable = User.query.join(Roster, Roster.user_id==User.id).add_columns(User.name, Roster.grade).filter_by(class_id=thisClass.id).all()
-    return render_template('class_1.html', course=thisClass, names=nameGradeTable, displayName=currentTeacher)
-
-@app.route('/add', methods = ['GET', 'POST'])
-@login_required
-def add():
-    if(request.method == "GET"):
-        print("\n\n\n",current_user.id,"current_user")
-        return render_template('add_courses.html', students = Course.query.all())
-    if(request.method == "POST"):
-        row = request.form.get("Add")
-        one = User.query.filter_by(id = current_user.id).first()
-        two = Course.query.filter_by(id = row).first()
-        if(two.capacity == two.enrollment):
-            flash("Sorry, but this class is full", "info")
-            return redirect(url_for('add'))
-        two.enrollment = two.enrollment + 1
-        db.session.commit()
-        three = Teacher.query.filter_by(name = two.teacher).first()
-        new_course = Roster(user = one, course = two, grade = "null")
-        new_scheduele = Icarus(user = one, course = two, class_name = two.course_id, teacher = two.teacher, time = two.time, enrollment = two.enrollment, capacity = two.capacity)
-        new_student = Attendance(user = one, teacher = three)
-        db.session.add(new_course) 
-        db.session.add(new_student) 
-        db.session.add(new_scheduele)
-        db.session.commit()
-        flash("Class added!", "info")
-        return redirect(url_for('add'))
-'''

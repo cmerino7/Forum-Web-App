@@ -1,10 +1,14 @@
 <html>
-{% block content %}
 <title>Feel free to join the discussuion!</title>
-<!--link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"-->
 <div class="transbox">
 
-    
+{% with messages = get_flashed_messages() %}
+    {% if messages  %}
+        {% for msg in messages %}
+            <p class="error"> {{msg}} </p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
     <head>
         <h1 class="pageTitle">Reply:</h1>
@@ -64,32 +68,25 @@
                 </div>
             </nav>
         <div class="outerbox">
-            <div class="commenterLikes3">
-                <a class="commenterUpLikes3" href="upboats"><i class="fa fa-chevron-circle-up fa-2x" aria-hidden="true"></i></a>
-                <p class="commenterLikesNum3">{{questions.likes}}</p>
-                <a class="commenterDownLikes3" href="downboats"><i class="fa fa-chevron-circle-down fa-2x" aria-hidden="true"></i></a></div>
-            
-            </div>
+
             <div class="list-group">
                 <h1 class="list-group-item-heading">{{ questions.posts }}</h1>
                 <p>by {{questions.name}}</p>
 
                 <div class="innerboxC">
                     Replies:
-                    <table>
+                    <table class="commentTable">
                     {% for something in replys %}
                     <div class="comments">                    
                         <tr>
-                            <td class="votebox">
-                                <div class="commenterLikes">
-                                    <a class="commenterUpLikes" href="upboats"><i class="fa fa-chevron-circle-up" aria-hidden="true"></i></a>
-                                    <p class="commenterLikesNum">{{something.likes}}</p>
-                                    <a class="commenterDownLikes" href="downboats"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a></div>
-                                </div>
-                            </td>
                             <td class="commentbox">
-                                {{something.posts}} 
-                                <p class="commenter">by {{something.name}}</p>
+                                <div class="commenterLikes">
+                                    <a class="commenterUpLikes" href="{{ url_for('upvote', reply=something.id, truthfullness = True) }}"><i class="fa fa-chevron-circle-up" aria-hidden="true"></i></a>
+                                    <p class="commenterLikesNum">{{something.likes}}</p>
+                                    <a class="commenterDownLikes" href="{{ url_for('upvote', reply=something.id, truthfullness = False) }}"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a></div>
+                                </div>
+                                <div class="postContent">{{something.posts}}</div>
+                                <div class="poster2"><p class="commenter">by {{something.name}}</p></div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -106,5 +103,4 @@
     </div>
     </body>
 </div></div>
-{% endblock %}
 </html>
