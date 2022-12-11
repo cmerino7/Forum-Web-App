@@ -123,7 +123,7 @@ def question():
     elif(request.method == 'POST'):
         post = request.form['askquestion']
         stuff = User.query.filter_by(id = current_user.id).first()
-        input = Post(posts = post, name = stuff.name, likes = 0)
+        input = Post(posts = post, name = stuff.name)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))

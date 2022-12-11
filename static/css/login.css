@@ -1,8 +1,14 @@
 html{
-    background-image: url("WileECyoteACME.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    /* -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center; 
+      background-size: cover; */
+    background-color: rgb(68, 68, 68);
+            /* box-shadow: 0 0 8px 8px white inset; */
+      /* background-blend-mode: multiply; */
+    background: linear-gradient(toright, #DECBA4, #3E5151);
     padding-top: 25px;
     padding-left: 25px;
     padding-right:  25px;
@@ -17,28 +23,53 @@ div{
     text-align: center;
 }
 
-div.transbox{
-    background-color: rgba(157, 157, 157, 0.85);
+/* div.transbox{
+    background-color: rgba(34, 34, 34, 0.116);
     padding-top: 10px;
     padding-right: 30px;
     padding-left: 30px;
     padding-bottom: 15px;
+    margin: 0px 200px;
     border-style: ridge;
     border-radius: 30px;
+    position:relative;
+    top: 50px;
+    box-shadow: rgba(255, 255, 255, 0.07) 0px 1px 2px, rgba(255, 255, 255, 0.07) 0px 2px 4px, rgba(255, 255, 255, 0.07) 0px 4px 8px, rgba(255, 255, 255, 0.07) 0px 8px 16px, rgba(255, 255, 255, 0.07) 0px 16px 32px, rgba(255, 255, 255, 0.07) 0px 32px 64px;
+} */
+
+.form-control-field{
+    background-color: rgba(104, 104, 104, 0.514);
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
 }
 
-div.outerbox{
-    background-color: rgba(0, 188, 217, 0.514);
-    padding-top: 5px;
+.form-control-button{
+    width: 100%;
+}
+
+div.loginbox{    
+    /* background-image: url("WileECyoteACME.png"); */
+    /* background-repeat: no-repeat;
+    background-position: center;  */
+    /* opacity: .25; */
+    /* background-color: rgba(121, 121, 121, 0.144);
+    background-size: 520px; */
+    width: 300px;
+    background-image: linear-gradient(to right, #5c5c5c 0%, rgb(75, 75, 75) 100%);
+    padding-top: 120px;
     padding-right: 40px;
     padding-left: 40px;
     padding-bottom: 30px;
     display: inline-block;
-    border-style: groove;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;    border-radius: 10px;
+    /* box-shadow: rgba(255, 255, 255, 0.07) 0px 1px 2px, rgba(255, 255, 255, 0.07) 0px 2px 4px, rgba(255, 255, 255, 0.07) 0px 4px 8px, rgba(255, 255, 255, 0.07) 0px 8px 16px, rgba(255, 255, 255, 0.07) 0px 16px 32px, rgba(255, 255, 255, 0.07) 0px 32px 64px; */
+
+    /* background: linear-gradient(135deg,rgba(#242e4d, .9),rgba(#897e79, .9)); */
+
 }
 
-div.innerbox{
-    background-color: rgba(69, 231, 60, 0.49);
+/* div.innerbox{
+    background-color: rgba(13, 255, 0, 0.49);
     text-align: center;
     display: inline-block;
     border-style: groove;
@@ -46,7 +77,7 @@ div.innerbox{
     padding-right: 40px;
     padding-left: 40px;
     padding-bottom: 20px;
-}
+} */
 
 h1 {
     font-size: 25px;
