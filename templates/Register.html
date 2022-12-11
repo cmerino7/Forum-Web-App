@@ -1,21 +1,49 @@
 <html>
-    <title>Lab 8</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <div class = "transbox">
+<title>Register an ACME account</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="transbox">
+
     <head>
-        <h1>ACME University</h1>
+        <h1>ACME Forums</h1>
     </head>
+
     <body>
         <div class="outerbox">
-            <h1>Register</h1>
+            
+            <p>
+            <table class = "empty">
+            <tr class = "empty">
+            <td class = "empty">
+            <div class = "transbox">
+                <h4> Join the intellectual discussions</h4>
+                <h4> on ACME Forums!</h4>
+                <h4> Register an account to partake in</h4>
+                <h4> current and ongoing discussions, or</h4>
+                <h4> start your own!</h4>
+                <h5> Unlike Twitter, we support diverse opinions</h5>
+                <h5> on a wide array of topics!</h5>
+            </div>
+            </td>
+            
+            <td class = "empty">
+            <h1>Register Account</h1>
             <div class="innerbox">
-            <form method = "POST" action="">
-                <p>{{ form.hidden_tag() }}</p>
-                <p>{{ form.name }}</p>
-                <p>{{ form.username }}</p>
-                <p>{{ form.password }}</p>
-                <p>{{ form.submit  }}</p>
-            </form>
+                <form method="POST" action="">
+                    <p>{{ form.hidden_tag() }}</p>
+                    <p><h3 style = "text-align: left;">Your Name:</h3></p>
+                    <p>{{ form.name }}</p>
+                    <p><h3 style = "text-align: left;">Username:</h3></p>
+                    <p>{{ form.username }}</p>
+                    <p><h3 style = "text-align: left;">Password:</h3></p>
+                    <p>{{ form.password }}</p>
+                    <p>{{ form.submit }}</p>
+                </form>
+            </div></td>
+            </tr>
+            </table>
+            </p>
+        </div>
     </body>
-    </div>
+</div>
+
 </html>
