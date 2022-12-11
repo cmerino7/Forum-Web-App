@@ -1,45 +1,106 @@
 <html>
-{% block content %}
 <title>Feel free to join the discussuion!</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 <div class="transbox">
 
-    {% with messages = get_flashed_messages() %}
-                {% if messages  %}
-                    {% for msg in messages %}
-                        <p> {{msg}} </p>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+{% with messages = get_flashed_messages() %}
+    {% if messages  %}
+        {% for msg in messages %}
+            <p class="error"> {{msg}} </p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
     <head>
-        <h1>ACME University</h1>
+        <h1 class="pageTitle">Reply:</h1>
         <div class="outerbox">
-            <h1>Current Discussion: </h1>
-            <p style="text-align: left;">Hello, here are the questions:</p>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/bougie.css') }}">
+        <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+   
+    </head>
+
+    <body>
+        
+        <nav class="main-menu">
+            <div class="topnav">
+                <i class="fa fa-search fa-lg"></i>
+                <form class="form-control" method="POST" action="{{url_for('find')}}">
+                    <input id="navSearch" type="text" name="filtered" placeholder="Search...">
+                </form>
+            </div>
+            <div>
+                <a class="logo" href="{{ url_for('aboot')}}"></a>
+            </div>
+            <div class="settings"></div>
+                <div class="scrollbar" id="style-1">
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('aboot')}}">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span class="nav-text">Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('login')}}">
+                            <i class="fa fa-user fa-lg"></i>
+                            <span class="nav-text">Login / Register</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('dashboard')}}">
+                            <i class="fa fa-envelope-o fa-lg"></i>
+                            <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('response', question_id=1)}}">
+                            <i class="fa fa-question-circle fa-lg"></i>
+                            <span class="nav-text">Response 1</span>
+                            </a>
+                        </li>
+                            <ul class="logout">
+                        <li>
+                            <a href="{{ url_for('logout')}}">
+                            <i class="fa fa-lightbulb-o fa-lg"></i>
+                            <span class="nav-text">Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        <div class="outerbox">
+
             <div class="list-group">
-                <h4 class="list-group-item-heading">{{ questions.posts }}</h4>
-                {% for something in replys %}
-                {{something.posts}}
-                {{something.name}}
-                <a href="{{ url_for('upvote', reply=something.id, truthfullness = True) }}" class="list-group-item">
-                    <span>&#8593;</span>
-                </a>
-                {{ something.likes }}
-                <a href="{{ url_for('upvote', reply=something.id, truthfullness = False) }}" class="list-group-item">
-                    <span>&#8595;</span>
-                </a>
-                {% endfor %}
+                <h1 class="list-group-item-heading">{{ questions.posts }}</h1>
+                <p>by {{questions.name}}</p>
+
+                <div class="innerboxC">
+                    Replies:
+                    <table class="commentTable">
+                    {% for something in replys %}
+                    <div class="comments">                    
+                        <tr>
+                            <td class="commentbox">
+                                <div class="commenterLikes">
+                                    <a class="commenterUpLikes" href="{{ url_for('upvote', reply=something.id, truthfullness = True) }}"><i class="fa fa-chevron-circle-up" aria-hidden="true"></i></a>
+                                    <p class="commenterLikesNum">{{something.likes}}</p>
+                                    <a class="commenterDownLikes" href="{{ url_for('upvote', reply=something.id, truthfullness = False) }}"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a></div>
+                                </div>
+                                <div class="postContent">{{something.posts}}</div>
+                                <div class="poster2"><p class="commenter">by {{something.name}}</p></div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>    
+                </div>    <br>   
+                Reply to {{questions.name}}:
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
+                <p><a href={{ url_for('dashboard') }}>&lt;&lt; Return to Posts</a></p>
             </div>
-            <p style="text-align: right;"> <a href={{ url_for('logout') }}>Logout</a></p>
-    </head>
-
-    <body>
+            
+    </div>
     </body>
-</div>
-{% endblock %}
-
+</div></div>
 </html>

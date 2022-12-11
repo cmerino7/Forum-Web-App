@@ -49,9 +49,7 @@ a:active {
   color: blue;
 }
 */
-.transbox {
-  /* border: 2px solid green; */
-}
+
 
 .newPostButton{ /*button container*/
   position: absolute;
@@ -533,11 +531,6 @@ vertical-align:middle;
 width:190px;
 font-family: 'Titillium Web', sans-serif;
 }
-
-.main-menu .share {
-}
-
-
 
 .main-menu .fb-like {
 

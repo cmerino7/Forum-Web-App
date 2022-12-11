@@ -141,7 +141,7 @@ def response(question_id):
         stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions)
         db.session.add(stuff)
         db.session.commit()
-        return redirect( url_for('dashboard'))
+        return redirect( url_for('response', question_id = questions.id))
 
 @app.route('/upvote/<int:reply>/<string:truthfullness>', methods = ['GET'])
 def upvote(reply, truthfullness):
@@ -167,7 +167,7 @@ def upvote(reply, truthfullness):
         check = Vote.query.filter_by(user_id = current_user.id, replies_id = reply).first()
         if check.choice == truthfullness:
             post_id = Replies.query.filter_by(id = reply).first()
-            flash("Sorry, but you've all ready reacted with this", "info")
+            flash("Sorry, but you've already voted on this", "info")
             return redirect ( url_for('response', question_id = post_id.response))
         else:
             if truthfullness == 'True':
@@ -189,14 +189,14 @@ def upvote(reply, truthfullness):
 def find():
     temp = request.form['filtered']
     scope = Post.query.filter(Post.posts.contains(temp))
-    return render_template('find.html', preguntas = scope)
+    return render_template('find.html', preguntas = scope, result=temp)
 
 @app.route("/")
 def home():
     return render_template('about.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 with app.app_context():
     db.create_all()
