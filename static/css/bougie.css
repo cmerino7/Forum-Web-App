@@ -119,6 +119,7 @@ h1.pageTitle{
   padding: 6px 16px;
   position: relative;
   top: -8px;
+  right: 15.5px;
   text-align: center;
   text-decoration: none;
   user-select: none;
@@ -166,7 +167,7 @@ h1.pageTitle{
   border-radius: 20px;
   background: #252525;
   text-align: center;
-  padding: 100;
+  padding: 50 150 80;
   /* margin: 0 25%; */
   position: absolute;
   left: 50%;
@@ -182,9 +183,33 @@ h1.pageTitle{
   position: relative;
 }
 
+.google { /*ADDON SIDEBAR*/
+  background: #252525;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  width: 300px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  padding: 0px 5px;
+  overflow-y: auto;
+  z-index: -1;
+}
+h4.doogle {
+  text-align: center;
+  height: 90px;
+  position:relative;
+  top: 80px;
+}
+p.answer {
+  position:relative;
+  top: 0px;
+  /* height: 60px; */
+}
+
 .innerbox{ /* LIST OF POSTS OR QUESTIONS */
   /* border: 3px solid blue; */
-  margin: 0px 150px;
+  margin: 0px 310px 0px 125px;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 10px;
@@ -192,12 +217,23 @@ h1.pageTitle{
   top: 80px;
 }
 
+
+
+p.crickets {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index:-1;
+}
 .innerboxC{
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0px;
+  width: 100%;
+  padding: 0px 5px;
   height: 48vh;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  border-radius: 6px;
+  box-shadow: rgba(31, 31, 31, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 table.questionTable {
@@ -229,7 +265,7 @@ h1.list-group-item {
   position: relative;
   top: -10px;
   left: 40px;
-  inline-size: 1200px;
+  inline-size: 900px;
   overflow-wrap: break-word;
 }
 .poster {
@@ -342,7 +378,7 @@ td.searchresult {
   width: 700px;
   height: 80vh;
   padding: 30px;
-  margin: 0px 120px 0px 100px;
+  margin: 0px 700px 0px 0px;
   background: #252525;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;    border-radius: 10px;
   
@@ -465,7 +501,7 @@ input[type=text]#navSearch:focus {
   outline: none;
   box-shadow: inset 0 -1px 0 white;
 }
-
+/*--------------------------FROM SITE---------------------------------*/
 .settings {
   
   height:73px; 

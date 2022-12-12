@@ -6,7 +6,9 @@ from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
 from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
-
+# import people_also_ask
+import requests
+import json
 import os
 
 app = Flask(__name__)
@@ -133,8 +135,23 @@ def question():
 def response(question_id):
     questions = Post.query.get_or_404(question_id)
     replys = Replies.query.filter_by(response = question_id).all()
+    # answer = people_also_ask.get_answer(questions.posts)
+    
+    url = "https://duckduckgo-duckduckgo-zero-click-info.p.rapidapi.com/"
+    querystring = {"q":questions.posts,"format":"json","skip_disambig":"1","no_redirect":"1","no_html":"1","callback":"process_duckduckgo"}
+    headers = {
+        "X-RapidAPI-Key": "8b160655abmshc5a082b7c4f87b7p1d935fjsn4a9e4e59e925",
+        "X-RapidAPI-Host": "duckduckgo-duckduckgo-zero-click-info.p.rapidapi.com"
+    }
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    res = response.text
+    res1 = res.lstrip("process_duckduckgo(")
+    res2 = res1.strip("();")
+    res3 = json.loads(res2)
+    answer = res3["Abstract"]
+    # print(answer["Abstract"], type(response), type(answer))
     if(request.method == 'GET'):
-        return render_template('response.html', questions = questions, replys = replys)
+        return render_template('response.html', questions = questions, replys = replys, answer=answer)
     elif(request.method == 'POST'):
         person = User.query.filter_by(id = current_user.id).first()
         temp = request.form['answer']
