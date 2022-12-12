@@ -19,7 +19,6 @@
     </head>
 
     <body>
-        
         <nav class="main-menu">
             <div class="topnav">
                 <i class="fa fa-search fa-lg"></i>
@@ -42,25 +41,18 @@
                         <li>
                             <a href="{{ url_for('login')}}">
                             <i class="fa fa-user fa-lg"></i>
-                            <span class="nav-text">Login / Register</span>
+                            <span class="nav-text">{% if current_user %}Hello, {{current_user.name}}{% else %}Login / Register{% endif %}</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ url_for('dashboard')}}">
                             <i class="fa fa-envelope-o fa-lg"></i>
-                            <span class="nav-text">Dashboard</span>
+                            <span class="nav-text">View Questions</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ url_for('response', question_id=1)}}">
-                            <i class="fa fa-question-circle fa-lg"></i>
-                            <span class="nav-text">Response 1</span>
-                            </a>
-                        </li>
-                            <ul class="logout">
                         <li>
                             <a href="{{ url_for('logout')}}">
-                            <i class="fa fa-lightbulb-o fa-lg"></i>
+                            <i class="fa fa-sign-out fa-lg"></i>
                             <span class="nav-text">Log Out</span>
                             </a>
                         </li>
@@ -74,7 +66,7 @@
                 <p>by {{questions.name}}</p>
 
                 <div class="innerboxC">
-                    Replies:
+                    &emsp;Replies: <p class="crickets">*crickets*</p>
                     <table class="commentTable">
                     {% for something in replys %}
                     <div class="comments">                    
@@ -99,7 +91,19 @@
                 </form>
                 <p><a href={{ url_for('dashboard') }}>&lt;&lt; Return to Posts</a></p>
             </div>
-            
+            <div class="google">
+                <h4 class="doogle">From the Web</h4>
+                {% if answer|length > 1  %}
+                    <p class="answer">{{answer}}</p>
+                {% else %}
+                    <p class="answer">Sorry, no information found</p>
+                {% endif %}<!--
+                <p>{{answer.question}}</p>
+                <p><a class="googlelink" href="{{answer.link}}">{{answer.response}}</p>
+                    {{answer}}
+                -->
+
+            </div>
     </div>
     </body>
 </div></div>
