@@ -41,7 +41,7 @@
                         <li>
                             <a href="{{ url_for('login')}}">
                             <i class="fa fa-user fa-lg"></i>
-                            <span class="nav-text">Login / Register</span>
+                            <span class="nav-text">{% if current_user %}Hello, {{current_user.name}}{% else %}Login / Register{% endif %}</span>
                             </a>
                         </li>
                         <li>
