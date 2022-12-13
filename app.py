@@ -225,6 +225,19 @@ def find():
 def home():
     return render_template('about.html')
 
+@app.route("/dog")
+def dog():
+    return render_template('dog.html')
+
+@app.route("/elden")
+def elden():
+    return render_template('elden.html')
+
+@app.route("/game")
+def game():
+    return render_template('game.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
