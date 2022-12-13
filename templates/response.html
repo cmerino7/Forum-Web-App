@@ -69,6 +69,7 @@
                     &emsp;Replies: <p class="crickets">*crickets*</p>
                     <table class="commentTable">
                     {% for something in replys %}
+                    {% set image = images[loop.index-1] %}
                     <div class="comments">                    
                         <tr>
                             <td class="commentbox">
@@ -78,6 +79,9 @@
                                     <a class="commenterDownLikes" href="{{ url_for('upvote', reply=something.id, truthfullness = False) }}"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a></div>
                                 </div>
                                 <div class="postContent">{{something.posts}}</div>
+                                {% if image != '' %}
+                                    <li><img src="data:image/png;base64,{{image}}" width="200" height="100"></li>
+                                {% endif %}
                                 <div class="poster2"><p class="commenter">by {{something.name}}</p></div>
                             </td>
                         </tr>
@@ -85,8 +89,9 @@
                     </table>    
                 </div>    <br>   
                 Reply to {{questions.name}}:
-                <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}">
+                <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}" enctype="multipart/form-data">
                     <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
+                    <input type="file" name="imageFile">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 <p><a href={{ url_for('dashboard') }}>&lt;&lt; Return to Posts</a></p>

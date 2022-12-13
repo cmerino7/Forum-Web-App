@@ -60,6 +60,7 @@ class Replies(db.Model):
     posts = db.Column(db.Text)
     name = db.Column(db.String)
     likes = db.Column(db.Integer)
+    data = db.Column(db.LargeBinary, nullable = False)
     response = db.Column(db.Integer, db.ForeignKey('post.id'))
     user_votes = db.relationship('Vote', back_populates='replies')
     
@@ -150,11 +151,14 @@ def response(question_id):
     res3 = json.loads(res2)
     answer = res3["Abstract"]
     if(request.method == 'GET'):
-        return render_template('response.html', questions = questions, replys = replys, answer=answer)
+        imagestuff = [base64.b64encode(image.data).decode("utf-8") for image in replys]
+        return render_template('response.html', questions = questions, replys = replys, answer=answer, images = imagestuff)
     elif(request.method == 'POST'):
+        file = request.files['imageFile']
+        data = file.read()
         person = User.query.filter_by(id = current_user.id).first()
         temp = request.form['answer']
-        stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions)
+        stuff = Replies(posts = temp, name = person.name, likes = 0, post = questions, data = data)
         db.session.add(stuff)
         db.session.commit()
         return redirect( url_for('response', question_id = questions.id))
