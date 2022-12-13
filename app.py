@@ -46,7 +46,6 @@ class Post(db.Model):
     name = db.Column(db.String)
     posts = db.Column(db.Text)
     data = db.Column(db.LargeBinary, nullable = False) 
-    #rendered_data = db.Column(db.Text, nullable = False)
     reply = db.relationship('Replies', backref = 'post')
 
 class User(db.Model, UserMixin):
@@ -117,25 +116,18 @@ def aboot():
 @login_required
 def dashboard():
     if(request.method == 'GET'):
-        base64_images = []
-        preguntas = Post.query.filter_by().all()
-        images = Post.query.all()
-        base64_images = [base64.b64encode(image.data).decode("utf-8") for image in images]
-        return render_template('dashboard.html', preguntas = preguntas, images = base64_images)
+        preguntas = Post.query.all()
+        imagestuff = [base64.b64encode(image.data).decode("utf-8") for image in preguntas]
+        return render_template('dashboard.html', preguntas = preguntas, images = imagestuff)
     elif(request.method == 'POST'):
         post = request.form['askquestion']
-        file = request.files['inputFile']
+        file = request.files['imageFile']
         data = file.read()
         stuff = User.query.filter_by(id = current_user.id).first()
         input = Post(posts = post, name = stuff.name, data=data)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))
-
-def render_picture(data):
-
-    render_pic = base64.b64encode(data).decode('ascii') 
-    return render_pic
 
 
 @app.route('/response/<int:question_id>', methods = ['GET', 'POST'])
