@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="postContent">{{something.posts}}</div>
                                 {% if image != '' %}
-                                    <li><img src="data:image/png;base64,{{image}}" width="200" height="100"></li>
+                                    <li class="responsepics"><img src="data:image/png;base64,{{image}}" width="200" height="100"></li>
                                 {% endif %}
                                 <div class="poster2"><p class="commenter">by {{something.name}}</p></div>
                             </td>
@@ -90,7 +90,7 @@
                 </div>    <br>   
                 Reply to {{questions.name}}:
                 <form class="form-control" method="POST" action="{{url_for('response', question_id=questions.id)}}" enctype="multipart/form-data">
-                    <textarea class="form-control" id="answer" name="answer" rows="5" cols="60"></textarea>
+                    <textarea class="form-control" id="answer" name="answer" rows="4" cols="60"></textarea>
                     <input type="file" name="imageFile">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
