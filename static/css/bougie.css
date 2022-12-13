@@ -27,6 +27,14 @@ body
 
 }
 
+li {
+  list-style: none;  
+}
+li.responsepics {
+  position: relative;
+  left: 50px;
+}
+
 p.error {
   background-color: red;
   color: white;
