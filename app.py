@@ -187,16 +187,30 @@ def upvote(reply, truthfullness):
             flash("Sorry, but you've already voted on this", "info")
             return redirect ( url_for('response', question_id = post_id.response))
         else:
-            if truthfullness == 'True':
+            if truthfullness == 'True' and ((check.choice == None) or (check.choice == 'NULL')):
+                print("NANI 1")
                 post_id = Replies.query.filter_by(id = reply).first()
-                post_id.likes = post_id.likes + 2
+                post_id.likes = post_id.likes + 1
                 check.choice = 'True'
                 db.session.commit()
                 return redirect ( url_for('response', question_id = post_id.response))
-            else:
+            elif truthfullness == 'False' and ((check.choice == None) or (check.choice == 'NULL')):
+                print("NANI 2")
                 post_id = Replies.query.filter_by(id = reply).first()
-                post_id.likes = post_id.likes - 2
+                post_id.likes = post_id.likes - 1
                 check.choice = 'False'
+                db.session.commit()
+                return redirect ( url_for('response', question_id = post_id.response))
+            if truthfullness == 'False' and check.choice == 'True':
+                post_id = Replies.query.filter_by(id = reply).first()
+                post_id.likes = post_id.likes - 1
+                check.choice = 'NULL'
+                db.session.commit()
+                return redirect ( url_for('response', question_id = post_id.response))
+            elif truthfullness == 'True' and check.choice == 'False':
+                post_id = Replies.query.filter_by(id = reply).first()
+                post_id.likes = post_id.likes + 1
+                check.choice = 'NULL'
                 db.session.commit()
                 return redirect ( url_for('response', question_id = post_id.response))
 
