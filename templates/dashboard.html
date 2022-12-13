@@ -32,18 +32,25 @@
                         <li>
                             <a href="{{ url_for('login')}}">
                             <i class="fa fa-user fa-lg"></i>
-                            <span class="nav-text">{% if current_user %}Hello, {{current_user.name}}{% else %}Login / Register{% endif %}</span>
+                            <span class="nav-text">Login / Register</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ url_for('dashboard')}}">
                             <i class="fa fa-envelope-o fa-lg"></i>
-                            <span class="nav-text">View Questions</span>
+                            <span class="nav-text">Dashboard</span>
                             </a>
                         </li>
                         <li>
+                            <a href="{{ url_for('response', question_id=1)}}">
+                            <i class="fa fa-question-circle fa-lg"></i>
+                            <span class="nav-text">Response 1</span>
+                            </a>
+                        </li>
+                            <ul class="logout">
+                        <li>
                             <a href="{{ url_for('logout')}}">
-                            <i class="fa fa-sign-out fa-lg"></i>
+                            <i class="fa fa-lightbulb-o fa-lg"></i>
                             <span class="nav-text">Log Out</span>
                             </a>
                         </li>
@@ -75,16 +82,23 @@
             </script>
             <div id="newPost" class="newPost">
             <h1>Post A Question: </h1>
-                <form class="form-control" method="POST" action="{{url_for('question')}}">
-                    <textarea class="form-control" id="askquestion" name="askquestion" rows="5" cols="60"></textarea><br>
+                <form action="" method = "POST" enctype="multipart/form-data">
+                    <textarea id="askquestion" name="askquestion" rows="5" cols="60"></textarea><br>
+                    <input type="file" name="inputFile">
                     <button id="submitBtn" class="button-41" type="submit" class="btn btn-primary">Submit</button>
+                    <!--<div class="form-group">
+                        <label for="inputFile">File input</label>
+                        <input class="form-control-file" type="file" name="inputFile">
+                    </div> -->
                 </form>
         <p></p>
         <p></p>
         </div>
         <div class="innerbox">
             <table class="questionTable">
-                {% for something in preguntas %}
+                {% for image in preguntas %}
+                    {% set something = preguntas[loop.index-1] %}
+                    {% set image = images[loop.index-1] %}
                 <tr>
                     <th>
                         <td> 
@@ -92,21 +106,16 @@
                             <a href="{{ url_for('response', question_id=something.id) }}"><h1 class="list-group-item">{{ something.posts }}</h1></a>
                             </div>
                             <div class="poster">
+                                {% if image != '' %}
+                                    <li><img src="data:image/png;base64,{{image}}" width="200" height="100"></li>
+                                {% endif %}
                             Posted By: {{ something.name }}
                             </div>
                         </td>
                     </th>
                 </tr>
-
                 {% endfor %}
             </table>
-        </div>
-        <div class="google">
-            <h4 class="doogle">ye put stuff here</h4>
-                <p class="answer">dogs</p><br>
-                <p class="answer">cars</p><br>
-                <p class="answer">How to post: click 'Ask a Question!' button and type your question</p>
-            </div>
         </div>
     </body>
 

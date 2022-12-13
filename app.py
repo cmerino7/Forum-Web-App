@@ -1,12 +1,12 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
-# import people_also_ask
+import base64
 import requests
 import json
 import os
@@ -45,6 +45,8 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     posts = db.Column(db.Text)
+    data = db.Column(db.LargeBinary, nullable = False) 
+    #rendered_data = db.Column(db.Text, nullable = False)
     reply = db.relationship('Replies', backref = 'post')
 
 class User(db.Model, UserMixin):
@@ -111,24 +113,30 @@ class LoginForm(FlaskForm):
 def aboot():
     return render_template('about.html')
 
-@app.route('/dashboard', methods = ['GET'])
+@app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
-    preguntas = Post.query.filter_by().all()
-    return render_template('dashboard.html', preguntas = preguntas)
-
-@app.route('/question', methods = ['GET', 'POST'])
-@login_required
-def question():
     if(request.method == 'GET'):
-        return render_template('question.html')
+        base64_images = []
+        preguntas = Post.query.filter_by().all()
+        images = Post.query.all()
+        base64_images = [base64.b64encode(image.data).decode("utf-8") for image in images]
+        return render_template('dashboard.html', preguntas = preguntas, images = base64_images)
     elif(request.method == 'POST'):
         post = request.form['askquestion']
+        file = request.files['inputFile']
+        data = file.read()
         stuff = User.query.filter_by(id = current_user.id).first()
-        input = Post(posts = post, name = stuff.name)
+        input = Post(posts = post, name = stuff.name, data=data)
         db.session.add(input)
         db.session.commit()
         return redirect(url_for('dashboard'))
+
+def render_picture(data):
+
+    render_pic = base64.b64encode(data).decode('ascii') 
+    return render_pic
+
 
 @app.route('/response/<int:question_id>', methods = ['GET', 'POST'])
 @login_required
@@ -149,7 +157,6 @@ def response(question_id):
     res2 = res1.strip("();")
     res3 = json.loads(res2)
     answer = res3["Abstract"]
-    # print(answer["Abstract"], type(response), type(answer))
     if(request.method == 'GET'):
         return render_template('response.html', questions = questions, replys = replys, answer=answer)
     elif(request.method == 'POST'):
