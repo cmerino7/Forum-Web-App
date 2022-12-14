@@ -31,7 +31,7 @@
                         <li>
                             <a href="{{ url_for('login')}}">
                             <i class="fa fa-user fa-lg"></i>
-                            <span class="nav-text">Login / Register</span>
+                            <span class="nav-text">{% if current_user %}Hello, {{current_user.name}}{% else %}Login / Register{% endif %}</span>
                             </a>
                         </li>
                         <li>
@@ -41,13 +41,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('response', question_id=1)}}">
-                            <i class="fa fa-question-circle fa-lg"></i>
-                            <span class="nav-text">Response 1</span>
-                            </a>
-                        </li>
-                            <ul class="logout">
-                        <li>
                             <a href="{{ url_for('logout')}}">
                             <i class="fa fa-lightbulb-o fa-lg"></i>
                             <span class="nav-text">Log Out</span>
@@ -56,7 +49,7 @@
                     </ul>
                 </div>
             </nav>
-
+            <div class="about">
             <p><strong>What is ACME Forums?</strong></p>
             <p>ACME Formus is an online forum dedicated to being a place for quizative minds from all over the world to gather and partake
                  in stimulating intellectual discussions!</p>
@@ -71,7 +64,7 @@
                 ACME Forums to life! Salvador "SalYourPal" Ruiz-Ramirez went into the trenches to produce a strong and reliable back-end for ACME forums to be
                  built upon.  Chester "camm12" Merino built up many of the wonderful pages you see here and will see as you navigate through the
                  forums.  Isaac "LiquidWolf88" Perez provided some glow up to our pages as well as the resource pages tied to this site.  As for
-                 Francisco "Maksim8421" Gavida Santana... I'm... not quite sure what he did... Hmm... Oh, well.  Give our team much love, they worked hard to bring 
+                 Francisco "Maksim8421" Gavida Santana... I'm... not quite sure if he is alive... Hmm... Oh, well.  Give our team much love, they worked hard to bring 
                 ACME Forums to life!</p>
             <p></p>
 
@@ -85,5 +78,6 @@
             <p>Ignorance is the death of progress!  While it's perfectly fine to be incorrect on a factual issue, ACME Forums will not
                 tolerate intentional attempts to mislead other users with misinformation, slander, or libel of any kind.  We seek to be
                 humble intellects here on the forums as it is the core of our mission.  We take any attempt to undermine that mission very seriously.</p>
+            </div>
     </body>
 </html>

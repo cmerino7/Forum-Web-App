@@ -27,6 +27,10 @@ body
 
 }
 
+div.about {
+  margin-left: 10px;
+}
+
 li {
   list-style: none;  
 }
@@ -108,7 +112,9 @@ h1.pageTitle{
 
 #submitBtn {
   top: 20px;
+  right: 35px;
 }
+
 
 .button-41 {
   appearance: none;
@@ -167,12 +173,12 @@ h1.pageTitle{
 
 
 #newPost{
-    display: none;
+  display: none;
 
 }
 .newPost{  /*POST A QUESTION BOX*/
-  /* border: 2px solid green; */
-  border-radius: 20px;
+  border: 1px groove gray;
+  border-radius: 15px;
   background: #252525;
   text-align: center;
   padding: 50 150 80;
