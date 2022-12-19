@@ -94,7 +94,7 @@ a.commenterUpLikes:hover, a.commenterDownLikes:hover {
 
 .newPostButton{ /*button container*/
   position: absolute;
-  right: 30px;
+  right: 310px;
   top: 20px;
 }
 
@@ -201,7 +201,6 @@ h1.pageTitle{
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   padding: 0px 5px;
   overflow-y: auto;
-  z-index: -1;
 }
 h4.doogle {
   text-align: center;
