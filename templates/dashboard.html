@@ -32,7 +32,7 @@
                         <li>
                             <a href="{{ url_for('login')}}">
                             <i class="fa fa-user fa-lg"></i>
-                            <span class="nav-text">Login / Register</span>
+                            <span class="nav-text">{% if current_user %}Hello, {{current_user.name}}{% else %}Login / Register{% endif %}</span>
                             </a>
                         </li>
                         <li>
@@ -41,13 +41,6 @@
                             <span class="nav-text">Dashboard</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ url_for('response', question_id=1)}}">
-                            <i class="fa fa-question-circle fa-lg"></i>
-                            <span class="nav-text">Response 1</span>
-                            </a>
-                        </li>
-                            <ul class="logout">
                         <li>
                             <a href="{{ url_for('logout')}}">
                             <i class="fa fa-lightbulb-o fa-lg"></i>
@@ -116,6 +109,13 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div class="google">
+                <h4 class="doogle">Resources:</h4>
+                <p>'</p>
+                <a href="{{ url_for('dog')}}"><h1 class="list-group-item"> Dog article </h1> </a>
+                <a href="{{ url_for('elden')}}"><h1 class="list-group-item"> Elden article </h1> </a>
+                <a href="{{ url_for('game')}}"><h1 class="list-group-item"> game article </h1> </a>
+            </div>
         </div>
     </body>
 
